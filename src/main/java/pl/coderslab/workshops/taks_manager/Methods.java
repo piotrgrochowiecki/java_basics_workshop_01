@@ -80,7 +80,7 @@ public class Methods {
                 //removeTask();
                 break;
             case "list":
-                //listTask();
+                listTask(tasksReader("tasks.csv"));
                 break;
             case "exit":
                 //exitTask();
@@ -110,6 +110,15 @@ public class Methods {
         tasks[tasks.length - 1][0] = description;
         tasks[tasks.length - 1][1] = dueDate;
         tasks[tasks.length - 1][2] = importance;
+    }
+
+    public static void listTask(String[][] tab) {
+
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < tab[i].length; j++) {
+                System.out.println(tab[i][j]);
+            }
+        }
     }
 
 
