@@ -1,5 +1,7 @@
 package pl.coderslab.workshops.taks_manager;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -77,7 +79,7 @@ public class Methods {
                 addTask();
                 break;
             case "remove":
-                //removeTask();
+                removeTask(tasksReader("tasks.csv"));
                 break;
             case "list":
                 listTask(tasksReader("tasks.csv"));
@@ -116,9 +118,35 @@ public class Methods {
 
         for (int i = 0; i < tab.length; i++) {
             for (int j = 0; j < tab[i].length; j++) {
-                System.out.println(tab[i][j]);
+                System.out.print(tab[i][j] + " ");
             }
+            System.out.println();
         }
+    }
+
+    public static void removeTask(String[][] tab) {
+        String[][] tasks = Methods.tasksReader("tasks.csv");
+
+        System.out.println("Please select task number to be removed: ");
+        Scanner scanner = new Scanner(System.in);
+
+
+        while (!scanner.hasNextInt()) { //czy da się tu w jednej linijce zapisać warunek bycia liczbą oraz większe lub równe 0? Bo nie chcę kopiować wprost z rozwiązania.
+            scanner.next();
+            System.out.println("Number has to be equal or greater than 0!");
+            System.out.println("Please select task to be removed: ");
+        }
+
+        int number = scanner.nextInt();
+
+        try {
+            if (number < tab.length) {
+                tasks = ArrayUtils.remove(tab, number);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Task with provided number does not exist!");
+        }
+
     }
 
 
