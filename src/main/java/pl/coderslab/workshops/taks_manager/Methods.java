@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +15,7 @@ public class Methods {
 
         String[] opts = {"add", "remove", "list", "exit"};
         for (int i = 0; i < opts.length; i++) {
-            System.out.println(ConsoleColors.WHITE_BRIGHT + opts[i]);
+            System.out.println(ConsoleColors.RESET + opts[i]);
         }
     }
 
@@ -67,12 +68,13 @@ public class Methods {
         return tab;
     }
 
+
     public static void taskChoice() {
         Scanner scanner = new Scanner(System.in);
 
-        switch (scanner) {
+        switch (scanner.next()) {
             case "add":
-                //addTask();
+                addTask();
                 break;
             case "remove":
                 //removeTask();
@@ -87,4 +89,28 @@ public class Methods {
                 System.out.println("Select correct option!");
         }
     }
+
+    public static void addTask() {
+        String[][] tasks = Methods.tasksReader("tasks.csv");
+        tasks = Arrays.copyOf(tasks, tasks.length + 1);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Please add task description: ");
+        String description = scanner.nextLine();
+
+
+        System.out.println("Please add due date (YYYY-MM-DD): ");
+        String dueDate = scanner.nextLine();
+
+
+        System.out.println("Is your task important (true/false)? ");
+        String importance = scanner.nextLine();
+
+        tasks[tasks.length - 1] = new String[3];
+        tasks[tasks.length - 1][0] = description;
+        tasks[tasks.length - 1][1] = dueDate;
+        tasks[tasks.length - 1][2] = importance;
+    }
+
+
 }

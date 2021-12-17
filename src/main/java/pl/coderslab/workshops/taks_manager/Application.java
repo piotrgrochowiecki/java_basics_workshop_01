@@ -15,6 +15,7 @@ public class Application {
     public static void main(String[] args) {
         Methods.optionsDisplay();
         String[][] tasks = Methods.tasksReader("tasks.csv");
+        Methods.taskChoice();
     }
 
 }
