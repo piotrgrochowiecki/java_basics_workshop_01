@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 public class Methods {
 
@@ -64,5 +65,26 @@ public class Methods {
          */
 
         return tab;
+    }
+
+    public static void taskChoice() {
+        Scanner scanner = new Scanner(System.in);
+
+        switch (scanner) {
+            case "add":
+                //addTask();
+                break;
+            case "remove":
+                //removeTask();
+                break;
+            case "list":
+                //listTask();
+                break;
+            case "exit":
+                //exitTask();
+                break;
+            default:
+                System.out.println("Select correct option!");
+        }
     }
 }
