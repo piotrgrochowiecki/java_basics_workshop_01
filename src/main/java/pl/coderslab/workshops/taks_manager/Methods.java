@@ -1,6 +1,7 @@
 package pl.coderslab.workshops.taks_manager;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Methods {
+
 
     public static void optionsDisplay() {
         System.out.println(ConsoleColors.BLUE + "Please select an option:");
@@ -70,28 +72,6 @@ public class Methods {
         return tab;
     }
 
-
-    public static void taskChoice() {
-        Scanner scanner = new Scanner(System.in);
-
-        switch (scanner.next()) {
-            case "add":
-                addTask();
-                break;
-            case "remove":
-                removeTask(tasksReader("tasks.csv"));
-                break;
-            case "list":
-                listTask(tasksReader("tasks.csv"));
-                break;
-            case "exit":
-                //exitTask();
-                break;
-            default:
-                System.out.println("Select correct option!");
-        }
-    }
-
     public static void addTask() {
         String[][] tasks = Methods.tasksReader("tasks.csv");
         tasks = Arrays.copyOf(tasks, tasks.length + 1);
@@ -124,30 +104,77 @@ public class Methods {
         }
     }
 
-    public static void removeTask(String[][] tab) {
-        String[][] tasks = Methods.tasksReader("tasks.csv");
+//    public static int removeTask(String input) {
+//        String[][] tasks = Methods.tasksReader("tasks.csv");
+//
+//        System.out.println("Please select task number to be removed: ");
+//        Scanner scanner = new Scanner(System.in);
+//
+//
+//        while (!scanner.hasNextInt()) {
+//            scanner.next();
+//            System.out.println("Please provide a number! ");
+//            while (!(scanner.nextInt() <= 0)) {
+//                scanner.next();
+//                System.out.println("Number has to be greater than zero! ");
+//            }
+//        }
+//
+//        int number = scanner.nextInt();
+//
+//        try {
+//            if (number < tab.length) {
+//                tasks = ArrayUtils.remove(tab, number);
+//            }
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            System.out.println("Task with provided number does not exist!");
+//        }
+//        return -1;
+//    }
 
-        System.out.println("Please select task number to be removed: ");
-        Scanner scanner = new Scanner(System.in);
-
-
-        while (!scanner.hasNextInt()) { //czy da się tu w jednej linijce zapisać warunek bycia liczbą oraz większe lub równe 0? Bo nie chcę kopiować wprost z rozwiązania.
-            scanner.next();
-            System.out.println("Number has to be equal or greater than 0!");
-            System.out.println("Please select task to be removed: ");
+    public static boolean isNumberGreaterEqualZero(String input) {
+        if (NumberUtils.isParsable(input)) {
+            return Integer.parseInt(input) >= 0;
         }
-
-        int number = scanner.nextInt();
-
-        try {
-            if (number < tab.length) {
-                tasks = ArrayUtils.remove(tab, number);
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Task with provided number does not exist!");
-        }
-
+        return false;
     }
 
+    public static int getTheNumber() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Select task to remove: ");
 
+        String n = scanner.nextLine();
+        while (!isNumberGreaterEqualZero(n)) {
+            System.out.println("Incorrect argument. Task is has a positive number! ");
+            scanner.nextInt();
+        }
+        return Integer.parseInt(n);
+    }
+
+    public static void removeTask(String[][] tab, int index) {
+        String[][] tasks = Methods.tasksReader("tasks.csv");
+        try {
+            if (index < tab.length) {
+                tasks = ArrayUtils.remove(tab, index);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Element does not exist in the tab!");
+        }
+    }
+
+    public static void saveTabToFile(String fileName, String[][] tab) {
+        String[][] tasks = Methods.tasksReader("tasks.csv");
+        Path dir = Paths.get(fileName);
+
+        String[] lines = new String[tasks.length];
+        for (int i = 0; i < tab.length; i++) {
+            lines[i] = String.join(",", tab[i]);
+        }
+
+        try {
+            Files.write(dir, Arrays.asList(lines));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

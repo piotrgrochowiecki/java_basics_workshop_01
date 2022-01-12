@@ -13,9 +13,26 @@ import java.util.Scanner;
 public class Application {
 
     public static void main(String[] args) {
-        Methods.optionsDisplay();
+        Scanner scanner = new Scanner(System.in);
         String[][] tasks = Methods.tasksReader("tasks.csv");
-        Methods.taskChoice();
-    }
 
+        switch (scanner.next()) {
+            case "add":
+                Methods.addTask();
+                break;
+            case "remove":
+                Methods.removeTask(tasks, Methods.getTheNumber());
+                System.out.println("Task was succesfully deleted");
+                break;
+            case "list":
+                Methods.listTask(tasks);
+                break;
+            case "exit":
+                Methods.saveTabToFile("tasks.csv", tasks);
+                System.out.println(ConsoleColors.RED + "Bye, bye");
+                break;
+            default:
+                System.out.println("Select correct option!");
+        }
+    }
 }
